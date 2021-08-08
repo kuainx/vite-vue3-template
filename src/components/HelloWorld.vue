@@ -1,14 +1,15 @@
 <template>
-  <h1>props:{{ msg }}</h1>
+  <h1>{{ msg }}</h1>
   <p>
     <a href="https://vitejs.dev/guide/features.html" target="_blank">Vite Documentation</a>
     |
     <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
   </p>
-  <button type="button" @click="state.count++">count is: {{ state.count }} | {{ refA }}</button>
-  <h3>vuex test</h3>
+  <button type="button" @click="state.count++">count is: {{ state.count }}</button>
   <p>
-    <input @input="refresh" :value="name" />
+    vuex:
+    <input @input="refresh" :value="username" />
+    {{ username }}
   </p>
   <p>
     Edit
@@ -17,19 +18,17 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { STORE } from '@/store/vuex'
+import { reactive, computed } from 'vue'
 
-const store = useStore()
+const { STATE, COMMIT } = STORE()
 defineProps({
   msg: String
 })
 const state = reactive({ count: 0 })
-const refA = ref('A')
-const name = computed(() => store.state.user.name)
+const username = computed(() => STATE.user.name)
 const refresh = e => {
-  store.dispatch('user/saveName', e.target.value)
-  // store.commit('user/SET_NAME', e.target.value)
+  COMMIT('user/SET_NAME', e.target.value)
 }
 </script>
 
